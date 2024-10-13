@@ -58,7 +58,7 @@ export const logout = (req,res)=>{
        res.clearCookie("accessToken",{
         secure:true,
         sameSite:"none"
-       }).status(200).json("user has been loggedout");  
+       }).status(200).json("user has been loggedout"); 
 }
 
 export const validate = (req, res) => {
