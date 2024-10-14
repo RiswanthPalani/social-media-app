@@ -15,7 +15,9 @@ export const login = (req,res)=>{
 
             const {password , ...others} = data.rows[0];
             res.cookie("accessToken",token,{
-                httpOnly:true
+                httpOnly:true,
+                
+                // maxAge: 24 * 60 * 60 * 1000
             }).status(200).json(others);
         });
 }
@@ -54,16 +56,21 @@ export const register =  (req,res)=>{
 
 
 
-export const logout = (req,res)=>{
-       res.clearCookie("accessToken",{
-        secure:true,
-        sameSite:"none"
-       }).status(200).json("user has been loggedout"); 
-}
+export const logout = (req, res) => {
+  res.clearCookie("accessToken", {
+      httpOnly: true,  // Consider adding this if you set it during login
+      secure: false,    // Set to true in production with HTTPS
+      sameSite: "none", // or 'Lax' based on your needs
+      path: '/'         // Specify the path if necessary
+  }).status(200).json("User has been logged out");
+};
+
 
 export const validate = (req, res) => {
-    const userid = req.query.userid;
+  const userid = parseInt(req.query.userid, 10);
     const token = req.cookies.accessToken;
+
+    console.log("Token received in request: ", token);
   
     if (!token) {
       return res.status(401).json({ valid: false, message: "Not logged in!" });
