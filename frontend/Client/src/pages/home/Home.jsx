@@ -11,32 +11,32 @@ const Home = () => {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //   if (!currentUser) return;
+      if (!currentUser) return;
 
-    //   const checkLogin = async () => {
-    //     try {
-    //       const response = await axios.get('http://localhost:8800/api/auth/validate', {
-    //         params: { userid: currentUser?.id },  // Pass the user ID as query param if needed
-    //         withCredentials: true
-    //       });
-    //       if (!response.data.valid) {
-    //         navigate("/login");
-    //       }
-    //     } catch (error) {
-    //       if (error.response && !error.response.data.valid) {
-    //         console.log("User is not logged in, navigating to login...");
-    //         navigate("/login");
-    //       } else {
-    //         console.log("An unexpected error occurred: ", error);
-    //       }
-    //     }
-    //   };
+      const checkLogin = async () => {
+        try {
+          const response = await axios.get('http://localhost:8800/api/auth/validate', {
+            params: { userid: currentUser?.id },  // Pass the user ID as query param if needed
+            withCredentials: true
+          });
+          if (!response.data.valid) {
+            navigate("/login");
+          }
+        } catch (error) {
+          if (error.response && !error.response.data.valid) {
+            console.log("User is not logged in, navigating to login...");
+            navigate("/login");
+          } else {
+            console.log("An unexpected error occurred: ", error);
+          }
+        }
+      };
 
-    //   // Call checkLogin on component mount
-    //   checkLogin();
-    // }, [currentUser, navigate]);
+      // Call checkLogin on component mount
+      checkLogin();
+    }, [currentUser, navigate]);
 
   return (
     <div className="home">
