@@ -5,6 +5,7 @@ import  likeRoutes from "./routes/likes.js";
 import  commentRoutes from "./routes/comments.js";
 import  authRoutes from "./routes/auth.js";
 import relationshipRoutes from "./routes/relationships.js";
+import searchRoutes from "./routes/search.js";
 import cors from 'cors';    
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
@@ -48,6 +49,7 @@ app.use("/api/posts",postRoutes);
 app.use("/api/comments",commentRoutes);
 app.use("/api/likes",likeRoutes);
 app.use('/api/relationships', relationshipRoutes);
+app.use('/api/search',searchRoutes);
 
 
 

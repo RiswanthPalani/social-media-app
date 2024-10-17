@@ -3,12 +3,13 @@ import Posts from "../../components/posts/Posts";
 import Share from "../../components/share/Share";
 import "./home.scss";
 import { AuthContext } from "../../context/authContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect , useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const Home = () => {
   const { currentUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,12 +32,18 @@ const Home = () => {
           } else {
             console.log("An unexpected error occurred: ", error);
           }
+        } finally {
+          setLoading(false);  // Stop loading once check is done
         }
       };
 
       // Call checkLogin on component mount
       checkLogin();
     }, [currentUser, navigate]);
+
+    if (loading) {
+      return null;  // You can return a loading indicator here if you prefer
+    }
 
   return (
     <div className="home">

@@ -19,6 +19,8 @@ const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
   const [profileClick , setProfileClick] = useState(false);
+  const [suggestionList , setSuggestionList] = useState(false);
+  const [userList , setUserList] = useState([]);
   const navigate = useNavigate();
 
 
@@ -36,6 +38,32 @@ const Navbar = () => {
     }
      
   }
+
+    const handleSearch = async(e)=>{
+        try{
+             const name = e.target.value;
+            setSuggestionList(true);
+              if(name){
+                const result = await axios.get(`http://localhost:8800/api/search/${name}`);
+                console.log(JSON.stringify(result.data.rows));
+                setUserList(result.data.rows);
+                }
+                else {
+                   setSuggestionList(false);
+                  console.log('name is empty');
+                }
+        }
+        catch(error){
+           console.log(error);
+        }
+    }
+
+    const handleUser=(id)=>{
+           navigate(`/profile/${id}`);
+           setSuggestionList(false);
+         
+    }
+
   return (
     <div className="navbar">
       <div className="left">
@@ -49,10 +77,25 @@ const Navbar = () => {
           <DarkModeOutlinedIcon onClick={toggle} />
         )}
         <GridViewOutlinedIcon />
+        <div className="search-container">
         <div className="search">
           <SearchOutlinedIcon />
-          <input type="text" placeholder="Search..." />
+          <input type="text" placeholder="Search..." onChange={handleSearch} />
         </div>
+        {suggestionList ? <div className="suggestion-list">
+               {userList.length>0  ? <div className="user-list">
+                     {
+                        userList.map((user)=>(
+                          <div key = {user.id} className="user-container" onClick={()=>handleUser(user.id)}>
+                               <img src={'/upload/'+ user.profilepic} alt="" ></img>
+                              <div >{user.username}</div>
+                          </div>
+                        ))
+                     }
+               </div> 
+                :<div>Not Found!!</div>}            
+          </div>: <div></div>}
+          </div>
       </div>
       <div className="right">
         <PersonOutlinedIcon />

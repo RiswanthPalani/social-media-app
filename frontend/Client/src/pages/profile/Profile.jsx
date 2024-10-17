@@ -29,7 +29,7 @@ const Profile = () => {
   };
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ['user'],
+    queryKey: ['user', userid],
     queryFn: fetchUser
   });
 

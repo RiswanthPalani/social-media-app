@@ -68,7 +68,6 @@ export const validate = (req, res) => {
   const userid = parseInt(req.query.userid, 10);
   const token = req.cookies.accessToken;
 
-  console.log("Token received in request: ", token);
 
   if (!token) {
     return res.status(401).json({ valid: false, message: "Not logged in!" });
